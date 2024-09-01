@@ -99,21 +99,15 @@ jobs:
       - name: Try the cluster!
         run: kubectl get pods -A
 
-      - name: Deploy application to Minikube
-        run: |
-          kubectl apply -f manifests/deployment.yml
-          kubectl apply -f manifests/service.yml
-          kubectl rollout status deployment/springboot-deployment
-          kubectl wait --for=condition=ready pod -l app=springboot
-
-      - name: Expose Minikube Service
-        run: minikube service springboot-service --url
-
-      - name: Test Service URLs
+      - name: Deploy to minikube
+        run:
+         kubectl apply -f deploy/k8s.yaml
+         kubectl wait --for=condition=ready pod -l app=local-devex
+      - name: Test service URLs
         run: |
           minikube service list
-          minikube service springboot-service --url
-          echo "-------------------------- Opening the service -------------------------------"
-          curl $(minikube service springboot-service --url)
+          minikube service local-devex-svc --url
+          echo "------------------opening the service------------------"
+          curl $(minikube service local-devex-svc --url)   
         
         
