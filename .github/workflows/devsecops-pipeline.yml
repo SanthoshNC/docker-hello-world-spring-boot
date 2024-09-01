@@ -101,8 +101,8 @@ jobs:
 
       - name: Deploy application to Minikube
         run: |
-          kubectl apply -f manifests/deployment.yaml
-          kubectl apply -f manifests/service.yaml
+          kubectl apply -f manifests/deployment.yml
+          kubectl apply -f manifests/service.yml
           kubectl rollout status deployment/springboot-deployment
 
       - name: Expose Minikube Service
