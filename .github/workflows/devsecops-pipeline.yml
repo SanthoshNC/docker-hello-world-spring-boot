@@ -104,15 +104,16 @@ jobs:
           kubectl apply -f manifests/deployment.yml
           kubectl apply -f manifests/service.yml
           kubectl rollout status deployment/springboot-deployment
+          kubectl wait --for=condition=ready pod -l app=springboot
 
       - name: Expose Minikube Service
         run: minikube service springboot-service --url
 
-      - name: Expose Minikube Service
-        id: minikube-service
-        run: echo "MINIKUBE_URL=$(minikube service springboot-service --url)" >> $GITHUB_ENV
-
-      - name: Test application with curl
+      - name: Test Service URLs
         run: |
-         echo "Testing application with curl..."
-         curl ${{ env.MINIKUBE_URL }}/
+          minikube service list
+          minikube service springboot-service --url
+          echo "-------------------------- Opening the service -------------------------------"
+          curl $(minikube service springboot-service --url)
+        
+        
