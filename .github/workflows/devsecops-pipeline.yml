@@ -98,3 +98,21 @@ jobs:
       # now you can run kubectl to see the pods in the cluster
       - name: Try the cluster!
         run: kubectl get pods -A
+
+      - name: Deploy application to Minikube
+        run: |
+          kubectl apply -f manifests/deployment.yaml
+          kubectl apply -f manifests/service.yaml
+          kubectl rollout status deployment/springboot-deployment
+
+      - name: Expose Minikube Service
+        run: minikube service springboot-service --url
+
+      - name: Expose Minikube Service
+        id: minikube-service
+        run: echo "MINIKUBE_URL=$(minikube service my-app-service --url)" >> $GITHUB_ENV
+
+      - name: Test application with curl
+        run: |
+         echo "Testing application with curl..."
+         curl ${{ env.MINIKUBE_URL }}/
