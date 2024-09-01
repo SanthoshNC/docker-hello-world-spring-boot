@@ -90,3 +90,11 @@ jobs:
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
+
+      ## Minikube Deployment
+      - name: Start minikube
+        uses: medyagh/setup-minikube@latest
+        
+      # now you can run kubectl to see the pods in the cluster
+      - name: Try the cluster!
+        run: kubectl get pods -A
