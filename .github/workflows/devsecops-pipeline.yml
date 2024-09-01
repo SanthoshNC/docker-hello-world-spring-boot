@@ -100,7 +100,7 @@ jobs:
         run: kubectl get pods -A
 
       - name: Deploy to minikube
-        run:
+        run: |
          kubectl apply -f deploy/k8s.yaml
          kubectl wait --for=condition=ready pod -l app=local-devex
       - name: Test service URLs
@@ -108,6 +108,7 @@ jobs:
           minikube service list
           minikube service local-devex-svc --url
           echo "------------------opening the service------------------"
+          sleep 30
           curl $(minikube service local-devex-svc --url)   
         
         
