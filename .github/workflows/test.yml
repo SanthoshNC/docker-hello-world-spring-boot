@@ -27,3 +27,14 @@ jobs:
           minikube service local-devex-svc --url
           echo -n "------------------opening the service------------------"
           curl $(minikube service local-devex-svc --url)/version
+
+      - name: Run Dastardly Action Step for ginandjuice.shop
+        continue-on-error: true                        # This allows subsequent steps to run even if this step fails
+        uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: 'https://ginandjuice.shop'
+
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.10.0
+        with:
+          target: 'https://ginandjuice.shop'
